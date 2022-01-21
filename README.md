@@ -1,21 +1,31 @@
-# Buster Docker Fixes
- 
-## Note for ARM32 Users
+# Buster on ARMv7 Docker Fixes
 
-32-bit Raspberry Pi users running Debian "Buster"-based operating systems may have issues running certain docker containers. A docker container's maintainer may choose to update the base image to use Debian "Bullseye". The choice to do this update is generally made to ensure the container continues to receive bug fixes and timely security updates for installed packages.
+## The situation
 
-However, this choice impacts users of "Buster"-based distros and causes containers based on "Bullseye" to stop working. You will see errors in the logs indicating issues with the `RTC` or `Real Time Clock`.
+Users running Debian "Buster"-based operating systems (eg: Raspbian 1.3) on ARMv7 systems may have issues running certain Docker containers.
 
-The issue with "Buster"-based systems involves a very outdated system package called `libseccomp2`. Using "Bullseye"-based base images requires a more up-to-date `libseccomp2` that is not typically available without extra steps 
+A Docker container's maintainer may choose to update the base image to Debian "Bullseye", as this is the new stable branch of Debian.
+
+The choice to do this update is generally made to ensure container images continue to receive timely bug fixes and security updates for installed packages.
+
+## The problem
+
+Updating an image to use "Bullseye" impacts users wheir their system's operating system is a "Buster" based distribution. It may cause these containers to stop working or behave erroneously. You will see errors in the logs indicating issues with the `RTC` or `Real Time Clock`.
+
+The issue with "Buster" systems involves a very outdated system package called `libseccomp2`. Using "Bullseye" images in Docker containers requires a more up-to-date `libseccomp2` that is not typically available without extra steps 
+
+## The fix
 
 You have four options to ensure this container will work on your Pi.
 
 * Update `libseccomp2` in your operating system.
 * Update to a fresh install of Raspberry Pi OS 1.4 (Debian "Bullseye"-based), or an install of Raspberry Pi OS from an image made after November 2021.
 * Use Ubuntu ARM 64 bit
-* Run this container with the `priviledged` flag. **SECURITY ISSUE: NOT RECOMMENDED**
+* ~~Run this container with the `priviledged` flag.~~ **SECURITY ISSUE: NOT RECOMMENDED, PLEASE DO NOT DO THIS**
 
-[KX1T](https://github.com/kx1t) has created a [script](https://github.com/fredclausen/docker-acarshub/blob/main/libseccomp2-checker.sh) that you can run that will check your system and ensure it is ready. This script will only work on "Buster"-based Debian distros and will only change anything if your `libseccomp2` is outdated.
+[KX1T](https://github.com/kx1t) has created a [script](libseccomp2-checker.sh) that you can run. It will check your system and apply a fix if required.
+
+The script will only work on "Buster"-based Debian distributions and will only change anything if your `libseccomp2` is outdated.
 
 The `libseccomp2` script will do the following things to your system if the version of libseccomp2 is outdated:
 
