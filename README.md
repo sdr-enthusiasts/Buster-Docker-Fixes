@@ -1,8 +1,8 @@
-# Buster on ARMv7 Docker Fixes
+# Buster on 32-bit ARM Docker Fixes
 
 ## The situation
 
-Users running Debian "Buster"-based operating systems (eg: Raspbian 1.3) on ARMv7 systems may have issues running certain Docker containers.
+Users running 32-bit Debian "Buster"-based operating systems (eg: Raspbian 1.3) on ARM hardware (eg: Raspberry Pi) may have issues running certain Docker containers.
 
 A Docker container's maintainer may choose to update the base image to Debian "Bullseye", as this is the new stable branch of Debian.
 
