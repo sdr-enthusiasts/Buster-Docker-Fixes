@@ -19,6 +19,12 @@ then
 	echo "You aren't running BUSTER. The system reports $(sed -n 's/\(^\s*VERSION_CODENAME=\)\(.*\)/\2/p' /etc/os-release)."
 	echo "This script has been optimized for Raspberry Pi OS \"Buster\". Aborting."
 	exit 1
+else
+	echo "Your system is \"buster\" based. In order to proceed with checking if you need"
+	echo "To update your installed version of \"libseccomp2\" your installed packages"
+	echo "Need to be updated and \"bc\" installed if it is missing."
+	read -rp "Press ENTER to continue or Control-C to cancel" </dev/tty
+	echo ""
 fi
 
 # Now make sure that all packages are at their latest version, just in case the system is running way behind:
