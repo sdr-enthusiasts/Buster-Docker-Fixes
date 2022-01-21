@@ -13,6 +13,14 @@ echo ""
 echo "Once upgraded, you can always stay up to date by typing \"sudo apt update && sudo apt upgrade\" on your command line."
 echo ""
 
+# Make sure we are indeed running a Debian Buster (Raspberry Pi OS) system:
+if ! grep "VERSION_CODENAME=buster" /etc/os-release >/dev/null 2>/dev/null
+then
+	echo "You aren't running BUSTER. The system reports $(sed -n 's/\(^\s*VERSION_CODENAME=\)\(.*\)/\2/p' /etc/os-release)."
+	echo "This script has been optimized for Raspberry Pi OS \"Buster\". Aborting."
+	exit 1
+fi
+
 # Now make sure that all packages are at their latest version, just in case the system is running way behind:
 echo "Updating your system with the latest package versions. Please be patient, this may take a while."
 sudo apt update -q && sudo apt upgrade -y -q && sudo apt install -y -q bc >/dev/null 2>&1
@@ -27,16 +35,8 @@ then
 	exit 0
 fi
 
-# Make sure we are indeed running a Debian Buster (Raspberry Pi OS) system:
-if ! grep "VERSION_CODENAME=buster" /etc/os-release >/dev/null 2>/dev/null
-then
-	echo "You aren't running BUSTER. The system reports $(sed -n 's/\(^\s*VERSION_CODENAME=\)\(.*\)/\2/p' /etc/os-release)."
-	echo "This script has been optimized for Raspberry Pi OS \"Buster\". Aborting."
-	exit 1
-fi
-
 echo "Your system is \"buster\" based, and it has libseccomp2 v${LIBVERSION}. Upgrade is recommended."
-read -rp "Press ENTER to the upgrade" </dev/tty
+read -rp "Press ENTER to the upgrade or Control-C to cancel" </dev/tty
 echo ""
 
 

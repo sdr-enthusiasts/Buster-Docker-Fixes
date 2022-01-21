@@ -27,10 +27,14 @@ You have four options to ensure this container will work on your Pi.
 
 The script will only work on "Buster"-based Debian distributions and will only change anything if your `libseccomp2` is outdated.
 
-The `libseccomp2` script will do the following things to your system if the version of libseccomp2 is outdated:
+The `libseccomp2` script will do the following things to your system:
+
+* Determine if your system is buster based, and if not it will not run.
+* Update your system packages, and install the program `bc` if not present. `bc` is used to help the script determine if the `libseccomp2` package is too old.
+
+If the script determines `libseccomp2` is outdated, it will then do the following after you give it permission to continue:
 
 * Add an official Debian repository to your apt sources along with the associated GPG key
-* Update your system packages prior to updating `libseccomp2`
 * Finally, install `libseccomp2`
 
 You may be prompted for a password because the script is modifying things that require escalated privileges.
