@@ -2,9 +2,29 @@
 #
 # This script updates a BUSTER Debian distribution so it will have the latest version of libseccomp2.
 # The upgrade is necessary to run Bullseye-based Docker containers on a Buster host system.
+# For more information about this issue, please see https://docs.linuxserver.io/faq#option-2 and https://github.com/linuxserver/docker-jellyfin/issues/71#issuecomment-733621693
 #
-# Inspired by https://docs.linuxserver.io/faq#option-2 and https://github.com/linuxserver/docker-jellyfin/issues/71#issuecomment-733621693
-
+# MIT License
+# Copyright (c) 2021, Fred Clausen, Ramon F. Kolb (kx1), and others
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+# 
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+# 
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+#
 # Welcome message:
 echo "Welcome to the libseccomp2 upgrade script for Buster. This script is meant to be run on Raspberry Pi Buster-based systems that have Docker containers"
 echo "that run Debian Bullseye or later. For this, the \"libseccomp2\" library version must be 2.4 or later."
@@ -14,10 +34,13 @@ echo "Once upgraded, you can always stay up to date by typing \"sudo apt update 
 echo ""
 
 # Make sure we are indeed running a Debian Buster (Raspberry Pi OS) system:
-if ! grep "VERSION_CODENAME=buster" /etc/os-release >/dev/null 2>/dev/null
+if ! grep "VERSION_CODENAME=buster" /etc/os-release >/dev/null 2>/dev/null && [[ "${1,,}" != "override" ]]
 then
 	echo "You aren't running BUSTER. The system reports $(sed -n 's/\(^\s*VERSION_CODENAME=\)\(.*\)/\2/p' /etc/os-release)."
 	echo "This script has been optimized for Raspberry Pi OS \"Buster\". Aborting."
+	echo ""
+	echo "If you are 100% sure what you are doing and want to go ahead despite this warning, you can skip this check by running the script with with the OVERRIDE parameter:"
+	echo "$0 OVERRIDE"
 	exit 1
 else
 	echo "Your system is \"buster\" based. In order to proceed with checking if you need"
