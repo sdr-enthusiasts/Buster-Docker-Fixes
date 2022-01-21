@@ -4,7 +4,7 @@
 
 Users running 32-bit Debian "Buster"-based operating systems (e.g., Raspbian/Raspberry Pi OS 1.3) on ARM hardware (e.g., Raspberry Pi) may have issues running certain Docker containers.
 
-Newer Docker containers may be based on Debian "Bullseye", the latest stable branch of Debian Linux, as newer versions of Linux are generally better maintained and receive timely bug fixes and security updates for installed packages.
+Newer Docker containers can be based on Debian "Bullseye", the latest stable branch of Debian Linux. Newer versions of Linux are generally better maintained and receive timely bug fixes and security updates for installed packages.
 
 ## The problem
 
@@ -14,7 +14,7 @@ Users of older 32-bits "Buster" based ARM systems may experience problems runnin
 sleep: cannot read realtime clock: Operation not permitted
 ```
 
-The issue with "Buster" systems is related to a system package called `libseccomp2`. "Bullseye" Docker containers requires a more up-to-date `libseccomp2` than is typically available on these "Buster" systems.
+The issue with "Buster" systems is related to a system package called `libseccomp2`. "Bullseye" Docker containers require a more up-to-date `libseccomp2` than is typically available on these older "Buster" systems.
 
 ## How to fix this
 
@@ -37,10 +37,10 @@ curl -sL https://raw.githubusercontent.com/fredclausen/Buster-Docker-Fixes/main/
 
 ### What does the script do?
 
-The script will only work on "Buster"-based Debian distributions and will only change anything if your `libseccomp2` is outdated.
+The script will only work on "Buster"-based Debian distributions and will only update `libseccomp2` if it is outdated.
 The `libseccomp2` script will do the following things to your system:
 
-* Determine if your system is buster based, and if not it will not run
+* Determine if your system is buster based, and if not, stop
 * Update your system packages, and install the program `bc` if not present. `bc` is used to help the script determine if the `libseccomp2` package is too old
 * If the script determines `libseccomp2` is outdated, it will then do the following after you give it permission to continue:
   - Add an official Debian repository to your apt sources along with the associated GPG key
