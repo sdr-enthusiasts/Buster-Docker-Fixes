@@ -39,8 +39,9 @@ then
 	echo "You aren't running BUSTER. The system reports $(sed -n 's/\(^\s*VERSION_CODENAME=\)\(.*\)/\2/p' /etc/os-release)."
 	echo "This script has been optimized for Raspberry Pi OS \"Buster\". Aborting."
 	echo ""
-	echo "If you are 100% sure what you are doing and want to go ahead despite this warning, you can skip this check by running the script with with the OVERRIDE parameter:"
-	echo "$0 OVERRIDE"
+	echo "If you are 100% sure what you are doing and want to go ahead despite this warning,"
+	echo "you can skip this check by downloading the script and running it with the OVERRIDE commandline parameter:"
+	echo "libseccomp2-checker.sh OVERRIDE"
 	exit 1
 else
 	echo "Your system is \"buster\" based. In order to proceed with checking if you need"
