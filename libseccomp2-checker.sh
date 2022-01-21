@@ -5,7 +5,7 @@
 # For more information about this issue, please see https://docs.linuxserver.io/faq#option-2 and https://github.com/linuxserver/docker-jellyfin/issues/71#issuecomment-733621693
 #
 # MIT License
-# Copyright (c) 2021, Fred Clausen, Ramon F. Kolb (kx1), and others
+# Copyright (c) 2021, Fred Clausen, Ramon F. Kolb (kx1t), and others
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
