@@ -10,7 +10,7 @@ The choice to do this update is generally made to ensure container images contin
 
 ## The problem
 
-Updating an image to use "Bullseye" impacts users wheir their system's operating system is a "Buster" based distribution. It may cause these containers to stop working or behave erroneously. You will see errors in the logs indicating issues with the `RTC` or `Real Time Clock`.
+Updating an image to use "Bullseye" impacts users when their system's operating system is a "Buster" based distribution. It may cause these containers to stop working or behave erroneously. You will see errors in the logs indicating issues with the `RTC` or `Real Time Clock`.
 
 The issue with "Buster" systems involves a very outdated system package called `libseccomp2`. Using "Bullseye" images in Docker containers requires a more up-to-date `libseccomp2` that is not typically available without extra steps 
 
