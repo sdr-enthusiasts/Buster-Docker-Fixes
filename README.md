@@ -2,42 +2,32 @@
 
 ## The situation
 
-Users running 32-bit Debian "Buster"-based operating systems (eg: Raspbian 1.3) on ARM hardware (eg: Raspberry Pi) may have issues running certain Docker containers.
+Users running 32-bit Debian "Buster"-based operating systems (e.g., Raspbian/Raspberry Pi OS 1.3) on ARM hardware (e.g., Raspberry Pi) may have issues running certain Docker containers.
 
-A Docker container's maintainer may choose to update the base image to Debian "Bullseye", as this is the new stable branch of Debian.
-
-The choice to do this update is generally made to ensure container images continue to receive timely bug fixes and security updates for installed packages.
+Newer Docker containers may be based on Debian "Bullseye", the latest stable branch of Debian Linux, as newer versions of Linux are generally better maintained and receive timely bug fixes and security updates for installed packages.
 
 ## The problem
 
-Updating an image to use "Bullseye" impacts users when their system's operating system is a "Buster" based distribution. It may cause these containers to stop working or behave erroneously. You will see errors in the logs indicating issues with the `RTC` or `Real Time Clock`.
+Users of older 32-bits "Buster" based ARM systems may experience problems running "Bullseye" based Docker Containers. For example, you may see errors in the logs indicating issues with the `RTC` or `Real Time Clock`. This is an example of such error message:
 
-The issue with "Buster" systems involves a very outdated system package called `libseccomp2`. Using "Bullseye" images in Docker containers requires a more up-to-date `libseccomp2` that is not typically available without extra steps 
+```
+sleep: cannot read realtime clock: Operation not permitted
+```
 
-## The fix
+The issue with "Buster" systems is related to a system package called `libseccomp2`. "Bullseye" Docker containers requires a more up-to-date `libseccomp2` than is typically available on these "Buster" systems.
 
-You have four options to ensure this container will work on your Pi.
+## How to fix this
 
-* Update `libseccomp2` in your operating system.
-* Update to a fresh install of Raspberry Pi OS 1.4 (Debian "Bullseye"-based), or an install of Raspberry Pi OS from an image made after November 2021.
-* Use Ubuntu ARM 64 bit
-* ~~Run this container with the `priviledged` flag.~~ **SECURITY ISSUE: NOT RECOMMENDED, PLEASE DO NOT DO THIS**
+### ~~Four~~ Three options to fix
+You have ~~four~~ three options to ensure this container will work on your Pi.
 
-[KX1T](https://github.com/kx1t) has created a [script](libseccomp2-checker.sh) that you can run. It will check your system and apply a fix if required.
+1. Update `libseccomp2` in your operating system 
+2. Update to a fresh install of Raspberry Pi OS 1.4 (Debian "Bullseye"-based), or an install of Raspberry Pi OS from an image made after November 2021
+3. Upgrade to Ubuntu ARM 64 bit
+4. ~~Run this container with the `priviledged` flag.~~ **SECURITY ISSUE: NOT RECOMMENDED, PLEASE DO NOT DO THIS**
 
-The script will only work on "Buster"-based Debian distributions and will only change anything if your `libseccomp2` is outdated.
-
-The `libseccomp2` script will do the following things to your system:
-
-* Determine if your system is buster based, and if not it will not run.
-* Update your system packages, and install the program `bc` if not present. `bc` is used to help the script determine if the `libseccomp2` package is too old.
-
-If the script determines `libseccomp2` is outdated, it will then do the following after you give it permission to continue:
-
-* Add an official Debian repository to your apt sources along with the associated GPG key
-* Finally, install `libseccomp2`
-
-You may be prompted for a password because the script is modifying things that require escalated privileges.
+### Our recommendation
+The easiest solution is option 1: update `libseccomp2` in your operating system. [KX1T](https://github.com/kx1t) has created a [script](libseccomp2-checker.sh) that you can run. It will check that your system is "Buster" based and install an updated version of `libseccomp2` only if required and available.
 
 To run this script, which only needs to be done once, please do the following:
 
@@ -45,4 +35,16 @@ To run this script, which only needs to be done once, please do the following:
 curl -sL https://raw.githubusercontent.com/fredclausen/Buster-Docker-Fixes/main/libseccomp2-checker.sh | bash
 ```
 
-Apologies for any inconvenience this causes, however "Buster"-based distributions are now getting pretty old, and updating the container's base image to something less old provides benefits that outweigh the cost of running a simple script to fix your host. :-)
+### What does the script do?
+
+The script will only work on "Buster"-based Debian distributions and will only change anything if your `libseccomp2` is outdated.
+The `libseccomp2` script will do the following things to your system:
+
+* Determine if your system is buster based, and if not it will not run
+* Update your system packages, and install the program `bc` if not present. `bc` is used to help the script determine if the `libseccomp2` package is too old
+* If the script determines `libseccomp2` is outdated, it will then do the following after you give it permission to continue:
+  - Add an official Debian repository to your apt sources along with the associated GPG key
+  - Install a new version of `libseccomp2`
+
+You may be prompted for a password because the script is modifying things that require escalated (`sudo`) privileges.
+Feel free to inspect the script [here](libseccomp2-checker.sh).
