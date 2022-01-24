@@ -34,17 +34,19 @@ echo "Once upgraded, you can always stay up to date by typing \"sudo apt update 
 echo ""
 
 # Make sure we are indeed running a Debian Buster (Raspberry Pi OS) system:
-if ! grep "VERSION_CODENAME=buster" /etc/os-release >/dev/null 2>/dev/null && [[ "${1,,}" != "override" ]]
+OS_VERSION="$(sed -n 's/\(^\s*VERSION_CODENAME=\)\(.*\)/\2/p' /etc/os-release)"
+OS_VERSION=${OS_VERSION^^}
+if [[ "$OS_VERSION" != "BUSTER" ]] && [[ "${1,,}" != "override" ]]
 then
-	echo "You aren't running BUSTER. The system reports $(sed -n 's/\(^\s*VERSION_CODENAME=\)\(.*\)/\2/p' /etc/os-release)."
-	echo "This script has been optimized for Raspberry Pi OS \"Buster\". Aborting."
+	echo "You aren't running BUSTER. The system reports $OS_VERSION."
+	echo "This script has been optimized for Raspberry Pi OS \"BUSTER\". Aborting."
 	echo ""
 	echo "If you are 100% sure what you are doing and want to go ahead despite this warning,"
 	echo "you can skip this check by downloading the script and running it with the OVERRIDE commandline parameter:"
 	echo "libseccomp2-checker.sh OVERRIDE"
 	exit 1
 else
-	echo "Your system is \"buster\" based. In order to proceed with checking if you need"
+	echo "Your system is \"BUSTER\" based. In order to proceed with checking if you need"
 	echo "To update your installed version of \"libseccomp2\" your installed packages"
 	echo "Need to be updated and \"bc\" installed if it is missing."
 	read -rp "Press ENTER to continue or Control-C to cancel" </dev/tty
