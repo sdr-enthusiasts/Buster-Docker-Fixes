@@ -46,9 +46,9 @@ then
 	echo "libseccomp2-checker.sh OVERRIDE"
 	exit 1
 else
-	echo "Your system is \"BUSTER\" based. In order to proceed with checking if you need"
-	echo "To update your installed version of \"libseccomp2\" your installed packages"
-	echo "Need to be updated and \"bc\" installed if it is missing."
+	echo "Your system is \"BUSTER\" based."
+	echo "We will first update your installed packages, and then check if we need to update \"libseccomp2\"."
+	echo "We will also install \"bc\" if missing."
 	read -rp "Press ENTER to continue or Control-C to cancel" </dev/tty
 	echo ""
 fi
