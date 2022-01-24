@@ -56,7 +56,7 @@ echo "Updating your system with the latest package versions. Please be patient, 
 sudo apt update -q && sudo apt upgrade -y -q && sudo apt install -y -q bc >/dev/null 2>&1
 echo ""
 
-LIBVERSION="$(apt-cache policy libseccomp2|sed -n 's/\s*Installed:\s*\([0-9]*.[0-9]*\).*/\1/p')"
+LIBVERSION="$(apt-cache policy libseccomp2 | grep -e libseccomp2: -A1 | tail -n1 | sed -n 's/.*:\s*\([0-9]*.[0-9]*\).*/\1/p')"
 if (( $(echo "$LIBVERSION > 2.3" | bc -l) ))
 then
 	# No need to update!
@@ -72,7 +72,7 @@ echo ""
 
 
 #Now check once more which version of libseccomp2 is installed:
-LIBVERSION="$(apt-cache policy libseccomp2|sed -n 's/\s*Installed:\s*\([0-9]*.[0-9]*\).*/\1/p')"
+LIBVERSION="$(apt-cache policy libseccomp2 | grep -e libseccomp2: -A1 | tail -n1 | sed -n 's/.*:\s*\([0-9]*.[0-9]*\).*/\1/p')"
 if (( $(echo "$LIBVERSION < 2.4" | bc -l) ))
 then
 	# We need to upgrade
