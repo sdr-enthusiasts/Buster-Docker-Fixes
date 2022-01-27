@@ -35,6 +35,8 @@ To run this script, which only needs to be done once, please do the following:
 curl -sL https://raw.githubusercontent.com/fredclausen/Buster-Docker-Fixes/main/libseccomp2-checker.sh | bash
 ```
 
+After updating `libseccomp2`, you may have to restart your containers to ensure they run properly.
+
 ### What does the script do?
 
 The script will only work on "Buster"-based Debian distributions and will only update `libseccomp2` if it is outdated.
