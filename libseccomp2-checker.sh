@@ -51,7 +51,7 @@ fi
 
 LIBVERSION_MAJOR="$(apt-cache policy libseccomp2 | grep -e libseccomp2: -A1 | tail -n1 | sed -n 's/.*:\s*\([0-9]*\).\([0-9]*\).*/\1/p')"
 LIBVERSION_MINOR="$(apt-cache policy libseccomp2 | grep -e libseccomp2: -A1 | tail -n1 | sed -n 's/.*:\s*\([0-9]*\).\([0-9]*\).*/\2/p')"
-if (( LIBVERSION_MAJOR >= 2 )) && (( LIBVERSION_MINOR > 3 ))
+if (( LIBVERSION_MAJOR > 2 )) || (( LIBVERSION_MAJOR == 2 && LIBVERSION_MINOR >= 4 ))
 then
 	# No need to update!
     # shellcheck disable=SC2046,SC2027
@@ -70,7 +70,7 @@ echo ""
 # Now check once more which version of libseccomp2 is installed, because the apt upgrade may have already installed a suitable version:
 LIBVERSION_MAJOR="$(apt-cache policy libseccomp2 | grep -e libseccomp2: -A1 | tail -n1 | sed -n 's/.*:\s*\([0-9]*\).\([0-9]*\).*/\1/p')"
 LIBVERSION_MINOR="$(apt-cache policy libseccomp2 | grep -e libseccomp2: -A1 | tail -n1 | sed -n 's/.*:\s*\([0-9]*\).\([0-9]*\).*/\2/p')"
-if (( LIBVERSION_MAJOR <= 2 )) && (( LIBVERSION_MINOR < 4 ))
+if (( LIBVERSION_MAJOR < 2 )) || (( LIBVERSION_MAJOR == 2 && LIBVERSION_MINOR < 4 ))
 then
 	# We need to upgrade
 	echo "Now upgrading libseccomp2..."
@@ -83,7 +83,7 @@ fi
 # Now make sure all went well
 LIBVERSION_MAJOR="$(apt-cache policy libseccomp2 | grep -e libseccomp2: -A1 | tail -n1 | sed -n 's/.*:\s*\([0-9]*\).\([0-9]*\).*/\1/p')"
 LIBVERSION_MINOR="$(apt-cache policy libseccomp2 | grep -e libseccomp2: -A1 | tail -n1 | sed -n 's/.*:\s*\([0-9]*\).\([0-9]*\).*/\2/p')"
-if (( LIBVERSION_MAJOR >= 2 )) && (( LIBVERSION_MINOR > 3 ))
+if (( LIBVERSION_MAJOR > 2 )) || (( LIBVERSION_MAJOR == 2 && LIBVERSION_MINOR >= 4 ))
 then
 	echo "Upgrade complete. Your system now uses libseccomp2 version $(apt-cache policy libseccomp2|sed -n 's/\s*Installed:\s*\(.*\)/\1/p')."
 else
