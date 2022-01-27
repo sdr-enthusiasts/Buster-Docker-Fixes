@@ -46,7 +46,7 @@ then
 	echo "libseccomp2-checker.sh OVERRIDE"
 	exit 1
 else
-	echo "Your system is \"BUSTER\" based."
+	echo "Your system is \"${OS_VERSION}\" based."
 	echo "We will first check if we need to update \"libseccomp2\"."
 	read -rp "Press ENTER to continue or Control-C to cancel" </dev/tty
 	echo ""
@@ -64,10 +64,10 @@ then
 	exit 0
 fi
 
-echo "Your system is \"buster\" based, and it has libseccomp2 v${LIBVERSION_MAJOR}.${LIBVERSION_MINOR}. Upgrade is recommended."
+echo "Your system is \"${OS_VERSION}\" based, and it has libseccomp2 v${LIBVERSION_MAJOR}.${LIBVERSION_MINOR}. Upgrade is recommended."
+echo "We will first update your system with the latest package versions. Please be patient, this may take a while."
 read -rp "Press ENTER to the upgrade or Control-C to cancel" </dev/tty
 echo ""
-echo "We will first update your system with the latest package versions. Please be patient, this may take a while."
 sudo apt update -q && sudo apt upgrade -y -q
 echo ""
 
