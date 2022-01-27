@@ -47,37 +47,38 @@ then
 	exit 1
 else
 	echo "Your system is \"BUSTER\" based."
-	echo "We will first update your installed packages, and then check if we need to update \"libseccomp2\"."
-	echo "We will also install \"bc\" if missing."
+	echo "We will first check if we need to update \"libseccomp2\"."
 	read -rp "Press ENTER to continue or Control-C to cancel" </dev/tty
 	echo ""
 fi
 
 # Now make sure that all packages are at their latest version, just in case the system is running way behind:
-echo "Updating your system with the latest package versions. Please be patient, this may take a while."
-sudo apt update -q && sudo apt upgrade -y -q && sudo apt install -y -q bc >/dev/null 2>&1
-echo ""
 
-LIBVERSION="$(apt-cache policy libseccomp2 | grep -e libseccomp2: -A1 | tail -n1 | sed -n 's/.*:\s*\([0-9]*.[0-9]*\).*/\1/p')"
-if (( $(echo "$LIBVERSION > 2.3" | bc -l) ))
+LIBVERSION_MAJOR="$(apt-cache policy libseccomp2 | grep -e libseccomp2: -A1 | tail -n1 | sed -n 's/.*:\s*\([0-9]*\).\([0-9]*\).*/\1/p')"
+LIBVERSION_MINOR="$(apt-cache policy libseccomp2 | grep -e libseccomp2: -A1 | tail -n1 | sed -n 's/.*:\s*\([0-9]*\).\([0-9]*\).*/\2/p')"
+if (( LIBVERSION_MAJOR >= 2 )) && (( LIBVERSION_MINOR > 3 ))
 then
 	# No need to update!
     # shellcheck disable=SC2046,SC2027
-	echo "You are already running a version of libseccomp2 (v"$(apt-cache policy libseccomp2|sed -n 's/\s*Installed:\s*\(.*\)/\1/p')") that is recent enough. No need to upgrade!"
+	echo "You are running libseccomp2 v"$(apt-cache policy libseccomp2|sed -n 's/\s*Installed:\s*\(.*\)/\1/p')"), which is recent enough. No need to upgrade!"
 	exit 0
 fi
 
-echo "Your system is \"buster\" based, and it has libseccomp2 v${LIBVERSION}. Upgrade is recommended."
+echo "Your system is \"buster\" based, and it has libseccomp2 v${LIBVERSION_MAJOR}.${LIBVERSION_MINOR}. Upgrade is recommended."
 read -rp "Press ENTER to the upgrade or Control-C to cancel" </dev/tty
+echo ""
+echo "We will first update your system with the latest package versions. Please be patient, this may take a while."
+sudo apt update -q && sudo apt upgrade -y -q
 echo ""
 
 
-
-#Now check once more which version of libseccomp2 is installed:
-LIBVERSION="$(apt-cache policy libseccomp2 | grep -e libseccomp2: -A1 | tail -n1 | sed -n 's/.*:\s*\([0-9]*.[0-9]*\).*/\1/p')"
-if (( $(echo "$LIBVERSION < 2.4" | bc -l) ))
+# Now check once more which version of libseccomp2 is installed, because the apt upgrade may have already installed a suitable version:
+LIBVERSION_MAJOR="$(apt-cache policy libseccomp2 | grep -e libseccomp2: -A1 | tail -n1 | sed -n 's/.*:\s*\([0-9]*\).\([0-9]*\).*/\1/p')"
+LIBVERSION_MINOR="$(apt-cache policy libseccomp2 | grep -e libseccomp2: -A1 | tail -n1 | sed -n 's/.*:\s*\([0-9]*\).\([0-9]*\).*/\2/p')"
+if (( LIBVERSION_MAJOR <= 2 )) && (( LIBVERSION_MINOR < 4 ))
 then
 	# We need to upgrade
+	echo "Now upgrading libseccomp2..."
 	sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 04EE7237B7D453EC 648ACFD622F3D138
 	echo "deb http://deb.debian.org/debian buster-backports main" | sudo tee -a /etc/apt/sources.list.d/buster-backports.list
 	sudo apt update
