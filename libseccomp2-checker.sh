@@ -45,11 +45,6 @@ then
 	echo "you can skip this check by downloading the script and running it with the OVERRIDE commandline parameter:"
 	echo "libseccomp2-checker.sh OVERRIDE"
 	exit 1
-else
-	echo "Your system is \"${OS_VERSION}\" based."
-	echo "We will first check if we need to update \"libseccomp2\"."
-	read -rp "Press ENTER to continue or Control-C to cancel" </dev/tty
-	echo ""
 fi
 
 # Now make sure that all packages are at their latest version, just in case the system is running way behind:
@@ -84,4 +79,14 @@ then
 	sudo apt update
 	sudo apt install -y -q -t buster-backports libseccomp2
 fi
-echo "Upgrade complete. Your system now uses libseccomp2 version $(apt-cache policy libseccomp2|sed -n 's/\s*Installed:\s*\(.*\)/\1/p')."
+
+# Now make sure all went well
+LIBVERSION_MAJOR="$(apt-cache policy libseccomp2 | grep -e libseccomp2: -A1 | tail -n1 | sed -n 's/.*:\s*\([0-9]*\).\([0-9]*\).*/\1/p')"
+LIBVERSION_MINOR="$(apt-cache policy libseccomp2 | grep -e libseccomp2: -A1 | tail -n1 | sed -n 's/.*:\s*\([0-9]*\).\([0-9]*\).*/\2/p')"
+if (( LIBVERSION_MAJOR >= 2 )) && (( LIBVERSION_MINOR > 3 ))
+then
+	echo "Upgrade complete. Your system now uses libseccomp2 version $(apt-cache policy libseccomp2|sed -n 's/\s*Installed:\s*\(.*\)/\1/p')."
+else
+	echo "Something went wrong. Please try running the script again! If that doesn't work, please file an issue at https://github.com/fredclausen/Buster-Docker-Fixes/issues" 
+	echo "and we will try to help you."
+fi
