@@ -86,6 +86,10 @@ LIBVERSION_MINOR="$(apt-cache policy libseccomp2 | grep -e libseccomp2: -A1 | ta
 if (( LIBVERSION_MAJOR > 2 )) || (( LIBVERSION_MAJOR == 2 && LIBVERSION_MINOR >= 4 ))
 then
 	echo "Upgrade complete. Your system now uses libseccomp2 version $(apt-cache policy libseccomp2|sed -n 's/\s*Installed:\s*\(.*\)/\1/p')."
+	read -rp "For this fix to be applied, you should restart all of your containers. Do you want us to do this for you? (Y/n) " A
+	[[ "$A" == "" ]] && A="y" || A=${A,,}
+	[[ ${A:0:1} == "y" ]] && docker restart $(docker ps -q)
+	echo "Done!"
 else
 	echo "Something went wrong. Please try running the script again! If that doesn't work, please file an issue at https://github.com/fredclausen/Buster-Docker-Fixes/issues" 
 	echo "and we will try to help you."
