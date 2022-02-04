@@ -32,7 +32,7 @@ The easiest solution is option 1: update `libseccomp2` in your operating system.
 To run this script, which only needs to be done once, please do the following:
 
 ```shell
-curl -sL https://raw.githubusercontent.com/fredclausen/Buster-Docker-Fixes/main/libseccomp2-checker.sh | bash
+curl -sL https://raw.githubusercontent.com/sdr-enthusiasts/Buster-Docker-Fixes/main/libseccomp2-checker.sh | bash
 ```
 
 After updating `libseccomp2`, you may have to restart your containers to ensure they run properly.
