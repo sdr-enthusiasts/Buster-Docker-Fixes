@@ -91,6 +91,6 @@ then
 	[[ ${A:0:1} == "y" ]] && docker restart $(docker ps -q)
 	echo "Done!"
 else
-	echo "Something went wrong. Please try running the script again! If that doesn't work, please file an issue at https://github.com/fredclausen/Buster-Docker-Fixes/issues" 
+	echo "Something went wrong. Please try running the script again! If that doesn't work, please file an issue at https://github.com/sdr-enthusiasts/Buster-Docker-Fixes/issues" 
 	echo "and we will try to help you."
 fi
