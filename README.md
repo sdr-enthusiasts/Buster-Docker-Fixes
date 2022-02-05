@@ -1,14 +1,14 @@
-# Buster on 32-bit ARM Docker Fixes
+# Buster Docker Fixes
 
 ## The situation
 
-Users running 32-bit Debian "Buster"-based operating systems (e.g., Raspbian/Raspberry Pi OS 1.3) on ARM hardware (e.g., Raspberry Pi) may have issues running certain Docker containers.
+Users running Debian "Buster"-based operating systems (e.g., Raspbian/Raspberry Pi OS 1.3) on ARM hardware (e.g., Raspberry Pi) may have issues running certain Docker containers.
 
 Newer Docker containers can be based on Debian "Bullseye", the latest stable branch of Debian Linux. Newer versions of Linux are generally better maintained and receive timely bug fixes and security updates for installed packages.
 
 ## The problem
 
-Users of older 32-bits "Buster" based ARM systems may experience problems running "Bullseye" based Docker Containers. For example, you may see errors in the logs indicating issues with the `RTC` or `Real Time Clock`. This is an example of such error message:
+Users of older "Buster" based ARM systems may experience problems running "Bullseye" based Docker Containers. For example, you may see errors in the logs indicating issues with the `RTC` or `Real Time Clock`. This is an example of such error message:
 
 ```
 sleep: cannot read realtime clock: Operation not permitted
