@@ -8,7 +8,14 @@ Newer Docker containers can be based on Debian "Bullseye", the latest stable bra
 
 ## The problem
 
-Users of older "Buster" based ARM systems may experience problems running "Bullseye" based Docker Containers. For example, you may see errors in the logs indicating issues with the `RTC` or `Real Time Clock`. This is an example of such error message:
+Users of older "Buster" based ARM systems may experience problems running "Bullseye" based Docker Containers. For example, you may see errors in the logs indicating issues such as:
+
+* With the `RTC`
+* `Real Time Clock`
+* Any odd error message that may have the word `Time` in it
+* Or be otherwise related to the clock.
+
+This is an example of such error message:
 
 ```
 sleep: cannot read realtime clock: Operation not permitted
@@ -29,6 +36,8 @@ You have ~~four~~ three options to ensure this container will work on your Pi.
 ### Our recommendation
 The easiest solution is option 1: update `libseccomp2` in your operating system. [KX1T](https://github.com/kx1t) has created a [script](libseccomp2-checker.sh) that you can run. It will check that your system is "Buster" based and install an updated version of `libseccomp2` only if required and available.
 
+If you are unsure if your system may be affected you can also run this script. The script is designed to only run on systems it knows will have the problem and we can safely apply a fix.
+
 To run this script, which only needs to be done once, please do the following:
 
 ```shell
@@ -43,7 +52,7 @@ The script will only work on "Buster"-based Debian distributions and will only u
 The `libseccomp2` script will do the following things to your system:
 
 * Determine if your system is buster based, and if not, stop
-* Update your system packages, and install the program `bc` if not present. `bc` is used to help the script determine if the `libseccomp2` package is too old
+* Update your system packages
 * If the script determines `libseccomp2` is outdated, it will then do the following after you give it permission to continue:
   - Add an official Debian repository to your apt sources along with the associated GPG key
   - Install a new version of `libseccomp2`
