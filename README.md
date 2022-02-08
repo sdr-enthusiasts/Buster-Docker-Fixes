@@ -1,5 +1,5 @@
 # Buster (and Stretch) Docker Fixes
-
+[](https://discord.com/channels/@me/804331474513690625/940387433797799980 =200x)
 ## The situation
 
 Users running Debian "Stretch" or "Buster"-based operating systems (e.g., Raspbian/Raspberry Pi OS 1.3) on ARM hardware (e.g., Raspberry Pi) may have issues running certain Docker containers.
