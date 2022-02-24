@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e
+trap 'echo "[ERROR] Error in line $LINENO when executing: $BASH_COMMAND". Please fix the issue and run the script again.' ERR
 #
 # This script updates a STRETCH or BUSTER Debian distribution so it will have the latest version of libseccomp2.
 # The upgrade is necessary to run Bullseye-based Docker containers on a Buster host system.
