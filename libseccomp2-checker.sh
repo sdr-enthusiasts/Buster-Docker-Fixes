@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e
+trap 'echo "[ERROR] Error in line $LINENO when executing: $BASH_COMMAND". Please fix the issue and run the script again.' ERR
 #
 # This script updates a STRETCH or BUSTER Debian distribution so it will have the latest version of libseccomp2.
 # The upgrade is necessary to run Bullseye-based Docker containers on a Buster host system.
@@ -26,7 +28,7 @@
 # SOFTWARE.
 #
 # Welcome message:
-echo "Welcome to the libseccomp2 upgrade script for Debian Stretch and Buster. This script is meant to be run on Raspberry Pi Buster-based systems that have Docker containers"
+echo "Welcome to the libseccomp2 upgrade script for Debian Stretch and Buster. This script is meant to be run on Raspberry Pi Buster/Stretch-based systems that have Docker containers"
 echo "that run Debian Bullseye or later. For this, the \"libseccomp2\" library version must be 2.4 or later."
 echo "This script will check this, and upgrade the library as necessary."
 echo ""
@@ -35,7 +37,7 @@ echo ""
 
 # Make sure we are indeed running a Debian Buster (Raspberry Pi OS) system:
 OS_VERSION="$(sed -n 's/\(^\s*VERSION_CODENAME=\)\(.*\)/\2/p' /etc/os-release)"
-[[ "$OS_VERSION" == "" ]] && OS_VERSION="$(sed -n 's/^\s*VERSION=.*(\(.*\)).*/\1/p' /etc/os-release)"
+[[ "$OS_VERSION" == "" ]] && OS_VERSION="$(sed -n 's/^\s*VERSION=.*(\(.*\)).*/\1/p' /etc/os-release)" || true
 OS_VERSION=${OS_VERSION^^}
 if [[ "$OS_VERSION" != "BUSTER" ]] && [[ "$OS_VERSION" != "STRETCH" ]] && [[ "${1,,}" != "override" ]]
 then
@@ -94,7 +96,7 @@ then
 	echo "Upgrade complete. Your system now uses libseccomp2 version $(apt-cache policy libseccomp2|sed -n 's/\s*Installed:\s*\(.*\)/\1/p')."
 	read -rp "For this fix to be applied, you should restart all of your containers. Do you want us to do this for you? (Y/n) " A </dev/tty
 	[[ "$A" == "" ]] && A="y" || A=${A,,}
-	[[ ${A:0:1} == "y" ]] && docker restart $(docker ps -q)
+	[[ ${A:0:1} == "y" ]] && docker restart $(docker ps -q) || true
 	echo "Done!"
 else
 	echo "Something went wrong. Please try running the script again! If that doesn't work, please file an issue at https://github.com/sdr-enthusiasts/Buster-Docker-Fixes/issues"

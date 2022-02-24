@@ -1,5 +1,6 @@
 # Buster (and Stretch) Docker Fixes
-[](https://discord.com/channels/@me/804331474513690625/940387433797799980 =200x)
+<img source="https://raw.githubusercontent.com/sdr-enthusiasts/sdr-enthusiast-assets/main/SDR%20Enthusiasts.svg" height="200">
+
 ## The situation
 
 Users running Debian "Stretch" or "Buster"-based operating systems (e.g., Raspbian/Raspberry Pi OS 1.3) on ARM hardware (e.g., Raspberry Pi) may have issues running certain Docker containers.
@@ -59,6 +60,12 @@ The `libseccomp2` script will do the following things to your system:
 
 You may be prompted for a password because the script is modifying things that require escalated (`sudo`) privileges.
 Feel free to inspect the script [here](libseccomp2-checker.sh).
+
+Finally -- if you have a very old OS, the script may error out with the message below. In that case, first do `sudo apt update && sudo apt upgrade` and follow the instructions. Once done, run the script again.
+```
+E: Repository 'http://archive.raspberrypi.org/debian buster InRelease' changed its 'Suite' value from 'stable' to 'oldstable'
+N: This must be accepted explicitly before updates for this repository can be applied. See apt-secure(8) manpage for details.
+```
 
 ## LICENSE
 This repository, including any scripts, data, SDKs, and documentation is subject to the MIT License, [included](LICENSE) with this package. Copyright (c) 2021, 2022 by Ramon F. Kolb (kx1t), Fred Clausen, Mike Nye, and others.
