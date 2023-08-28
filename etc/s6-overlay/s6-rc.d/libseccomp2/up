@@ -1,2 +1,2 @@
-foreground { echo "Checking libseccomp2" }
+#!/bin/sh
 /etc/s6-overlay/scripts/libseccomp2_check.sh
