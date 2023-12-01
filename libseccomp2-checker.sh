@@ -78,7 +78,8 @@ then
 	# We need to upgrade
 	echo "Now upgrading libseccomp2..."
 	sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 04EE7237B7D453EC 648ACFD622F3D138
-	echo "deb http://deb.debian.org/debian buster-backports main" | sudo tee -a /etc/apt/sources.list.d/buster-backports.list
+	[ -f /etc/apt/sources.list.d/buster-backports.list ] && rm /etc/apt/sources.list.d/buster-backports.list
+	echo "deb [trusted=yes] http://deb.debian.org/debian buster-backports main" | sudo tee -a /etc/apt/sources.list.d/buster-backports.list
 	sudo apt update
 	sudo apt install -y -q -t buster-backports libseccomp2
 elif (( LIBVERSION_MAJOR < 2 )) || (( LIBVERSION_MAJOR == 2 && LIBVERSION_MINOR < 4 )) && [[ "${OS_VERSION}" == "STRETCH" ]]
